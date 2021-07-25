@@ -1,7 +1,7 @@
 const inquirer = require('inquirer')
-const Department = require('./Department')
-const Employee = require('./Employee')
-const Role = require('./Role')
+// const Department = require('./Department')
+// const Employee = require('./Employee')
+// const Role = require('./Role')
 const fs = require('fs')
 
 const options = [
@@ -13,9 +13,9 @@ const options = [
     }
 ]
 
-let optionChoice = inquirer.prompt(options)
 
 function company() {
+    let optionChoice = inquirer.prompt(options)
     inquirer
     .prompt(options)
     .then(navigateChoice(optionChoice)) 
@@ -25,29 +25,37 @@ const navigateChoice = (option) => {
     let choice = option.options
     switch(choice) {
         case 'View all Departments':
-            viewDepartments()
+            //viewDepartments()
+            console.log(choice)
             break;
         case 'View all Roles':
-            viewRoles()
+            //viewRoles()
+            console.log(choice)
             break;
         case 'View al Employees':
-            viewEmployees()
+            //viewEmployees()
+            console.log(choice)
             break;
         case 'Add a Department':
-            addDepartment()
+            //addDepartment()
+            console.log(choice)
             break;
         case 'Add a role':
-            addNewRole()
+            //addNewRole()
+            console.log(choice)
             break;
         case 'Add an Employee':
-            addEmployee()
+            //addEmployee()
+            console.log(choice)
             break;
         case 'Update an Employee':
-            updateEmployee()
+            //updateEmployee()
+            console.log(choice)
             break;
         default: 
             return 'Error, option was selected correctly!'
     }
 }
+company()
 
 module.exports = company;
