@@ -17,7 +17,7 @@ const db = mysql.createConnection(
       password: '',
       database: 'company_db'
     },
-    console.log(`Connected to the classlist_db database.`)
+    console.log(`Connected to the company_db database.`)
   );
 
   / Query database
