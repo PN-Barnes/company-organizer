@@ -15,7 +15,7 @@ const db = mysql.createConnection(
       user: 'root',
       // MySQL password
       password: '',
-      database: 'classlist_db'
+      database: 'company_db'
     },
     console.log(`Connected to the classlist_db database.`)
   );
