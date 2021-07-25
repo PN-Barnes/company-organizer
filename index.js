@@ -28,20 +28,20 @@ const navigateChoice = (option) => {
             //viewDepartments()
             console.log(choice)
             break;
-        case 'View all Roles':
-            //viewRoles()
-            console.log(choice)
-            break;
-        case 'View al Employees':
-            //viewEmployees()
-            console.log(choice)
-            break;
         case 'Add a Department':
             //addDepartment()
             console.log(choice)
             break;
+        case 'View all Roles':
+            //viewRoles()
+            console.log(choice)
+            break;
         case 'Add a role':
             //addNewRole()
+            console.log(choice)
+            break;
+        case 'View all Employees':
+            //viewEmployees()
             console.log(choice)
             break;
         case 'Add an Employee':
