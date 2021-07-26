@@ -21,8 +21,15 @@ const db = mysql.createConnection(
     console.log(`Connected to the company_db database.`)
   );
 
+
+db.connect((err) => {
+    if(err){
+        throw err;
+    }
+    console.log('Mysql is connected...')
+})
 // Query database
-db.query('SELECT * FROM students', function (err, results) {
+db.query('SELECT * FROM department', function (err, results) {
   console.log(results);
 });
 
@@ -36,3 +43,4 @@ app.listen(PORT, () => {
 });
 
 company()
+

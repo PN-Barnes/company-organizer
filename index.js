@@ -1,7 +1,8 @@
 const inquirer = require('inquirer')
-// const Department = require('./Department')
+const Department = require('./lib/Department')
 // const Employee = require('./Employee')
 // const Role = require('./Role')
+const mysql = require('mysql2');
 const fs = require('fs')
 
 const options = [
@@ -24,7 +25,7 @@ const navigateChoice = (option) => {
     let choice = option.options
     switch(choice) {
         case 'View all Departments':
-            //viewDepartments()
+
             console.log(choice)
             break;
         case 'Add a Department':
