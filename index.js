@@ -15,10 +15,9 @@ const options = [
 
 
 function company() {
-    let optionChoice = inquirer.prompt(options)
     inquirer
     .prompt(options)
-    .then(navigateChoice(optionChoice)) 
+    .then(navigateChoice(options)) 
 }
 
 const navigateChoice = (option) => {
