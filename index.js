@@ -5,6 +5,20 @@ const Department = require('./lib/Department')
 const mysql = require('mysql2');
 const fs = require('fs')
 
+
+const db = mysql.createConnection(
+    {
+      host: 'localhost',
+      // MySQL username,
+      user: 'root',
+      // MySQL password
+      password: '',
+      database: 'company_db'
+    },
+    console.log(`Connected to the company_db database.`)
+  );
+
+
 const options = [
     {
         type: 'list',
@@ -13,6 +27,15 @@ const options = [
         name: 'options'
     }
 ]
+
+const goBack = [
+    {
+        type: 'confirm',
+        message: 'what would you like to do next?',
+        name: 'goBack'
+    }
+]
+
 
 
 function company() {
@@ -25,8 +48,12 @@ const navigateChoice = (option) => {
     let choice = option.options
     switch(choice) {
         case 'View all Departments':
-
             console.log(choice)
+            db.query('SELECT * FROM department', function (err, results) {
+                if(err) throw err;
+                console.log(results);
+                navigateBack()
+            });
             break;
         case 'Add a Department':
             //addDepartment()
@@ -45,7 +72,7 @@ const navigateChoice = (option) => {
             console.log(choice)
             break;
         case 'Add an Employee':
-            //addEmployee()
+            addEmployee()
             console.log(choice)
             break;
         case 'Update an Employee':
@@ -56,6 +83,17 @@ const navigateChoice = (option) => {
             return 'Error, option was selected correctly!'
     }
 }
+
+function navigateBack(back) {
+    let confirmChoice = back.goBack
+    inquirer.prompt(goBack)
+    if(confirmChoice){
+        company();
+    } else {
+        return;
+    }
+
+}
 company()
 
-module.exports = company;
+module.exports = company, navigateChoice;
