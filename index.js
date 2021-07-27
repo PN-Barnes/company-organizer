@@ -1,10 +1,8 @@
 const inquirer = require('inquirer')
-const Department = require('./lib/Department')
+// const Department = require('./lib/Department')
 // const Employee = require('./Employee')
 // const Role = require('./Role')
 const mysql = require('mysql2');
-const fs = require('fs')
-
 
 const db = mysql.createConnection(
     {
@@ -12,12 +10,13 @@ const db = mysql.createConnection(
       // MySQL username,
       user: 'root',
       // MySQL password
-      password: '',
+      password: 'M@keMoney$2021',
       database: 'company_db'
     },
     console.log(`Connected to the company_db database.`)
   );
 
+// INQUIRER QUESTION ARRAYS
 
 const options = [
     {
@@ -35,54 +34,71 @@ const goBack = [
         name: 'goBack'
     }
 ]
+// =========================== END =====================//
 
 
 
-function company() {
-    inquirer
-    .prompt(options)
-    .then(navigateChoice(options)) 
-}
 
-const navigateChoice = (option) => {
-    let choice = option.options
-    switch(choice) {
-        case 'View all Departments':
-            console.log(choice)
-            db.query('SELECT * FROM department', function (err, results) {
-                if(err) throw err;
-                console.log(results);
-                navigateBack()
-            });
-            break;
-        case 'Add a Department':
-            //addDepartment()
-            console.log(choice)
-            break;
-        case 'View all Roles':
-            //viewRoles()
-            console.log(choice)
-            break;
-        case 'Add a role':
-            //addNewRole()
-            console.log(choice)
-            break;
-        case 'View all Employees':
-            //viewEmployees()
-            console.log(choice)
-            break;
-        case 'Add an Employee':
-            addEmployee()
-            console.log(choice)
-            break;
-        case 'Update an Employee':
-            //updateEmployee()
-            console.log(choice)
-            break;
-        default: 
-            return 'Error, option was selected correctly!'
+function generateDatabase() {
+    db.query( 'SOURCE schema.sql', function (err, results) {
+        if(err) throw err;
+        console.log(results)
+            db.query('SOURCE seeds.sql', function (err, results) {
+                if(err)throw err;
+                console.log(results)
+            })
+        })
     }
+    
+    
+async function company() {
+    let optionChoice = await inquirer.prompt(options)
+    console.log(optionChoice)
+    let navigateChoice = option => {
+        let choice = option.options
+        switch(choice) {
+            case 'View all Departments':
+                console.log(choice)
+                db.query('SELECT * FROM department', function (err, results) {
+                    if(err) throw err;
+                    console.log(results);
+                })
+                navigateBack();
+                break;
+            case 'Add a Department':
+                //addDepartment()
+                console.log(choice)
+                break;
+            case 'View all Roles':
+                //viewRoles()
+                console.log(choice)
+                break;
+            case 'Add a role':
+                //addNewRole()
+                console.log(choice)
+                break;
+            case 'View all Employees':
+                //viewEmployees()
+                console.log(choice)
+                break;
+            case 'Add an Employee':
+                addEmployee()
+                console.log(choice)
+                break;
+            case 'Update an Employee':
+                //updateEmployee()
+                console.log(choice)
+                break;
+            default: 
+                return 'Error, option was selected incorrectly!'
+        }
+    }
+    let navigationPick = await navigateChoice(optionChoice)
+    return navigationPick
 }
+    
+
+// allows the user to navigate back to the start of the program with y/n question.
 
 function navigateBack(back) {
     let confirmChoice = back.goBack
@@ -95,5 +111,4 @@ function navigateBack(back) {
 
 }
 company()
-
-module.exports = company, navigateChoice;
+//generateDatabase()
