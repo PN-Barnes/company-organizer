@@ -1,9 +1,13 @@
 const inquirer = require('inquirer')
 const Department = require('./lib/Department')
+const createDepartment = require('./lib/Department');
 // const Employee = require('./Employee')
 // const Role = require('./Role')
 const mysql = require('mysql2');
-const createDepartment = require('./lib/Department');
+const express = require('express')
+const app = express();
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 const db = mysql.createConnection(
     {
@@ -42,6 +46,7 @@ const goBack = [
         let choice = data.options
         switch(choice) {
             case 'View all Departments':
+                console.log(choice)
                 printDepartment();
                 //navigateBack();
                 break;
@@ -58,7 +63,7 @@ const goBack = [
                 console.log(choice)
                 break;
             case 'View all Employees':
-                //viewEmployees()
+                viewEmployees()
                 console.log(choice)
                 break;
             case 'Add an Employee':
@@ -74,7 +79,7 @@ const goBack = [
         }
     })
 
-
+// ================= VIEW FUNCTIONS ==========================//
 
 function printDepartment() {
     db.query('SELECT * FROM department', function (err, results) {
@@ -83,7 +88,21 @@ function printDepartment() {
     })
 }   
 
-        
+function viewEmployees() {
+    db.query('SELECT * FROM employee', function (err, results) {
+        if(err) throw err;
+        console.log(results);
+    })
+}
+
+function viewRoles() {
+    db.query('SELECT * FROM roles', function (err, results) {
+        if(err) throw err;
+        console.log(results);
+    })
+}
+
+// =================================================================//        
     
 
 // allows the user to navigate back to the start of the program with y/n question.
@@ -100,3 +119,11 @@ function printDepartment() {
 // }
 //company()
 //generateDatabase()
+// Default response for any other request (Not Found)
+// app.use((req, res) => {
+//     res.status(404).end();
+//   });
+  
+//   app.listen(PORT, () => {
+//     console.log(`Server running on port ${PORT}`);
+//   });
