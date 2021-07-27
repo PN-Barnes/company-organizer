@@ -1,8 +1,9 @@
 const inquirer = require('inquirer')
-// const Department = require('./lib/Department')
+const Department = require('./lib/Department')
 // const Employee = require('./Employee')
 // const Role = require('./Role')
 const mysql = require('mysql2');
+const createDepartment = require('./lib/Department');
 
 const db = mysql.createConnection(
     {
@@ -15,7 +16,6 @@ const db = mysql.createConnection(
     },
     console.log(`Connected to the company_db database.`)
   );
-
 // INQUIRER QUESTION ARRAYS
 
 const options = [
@@ -38,32 +38,12 @@ const goBack = [
 
 
 
-
-function generateDatabase() {
-    db.query( 'SOURCE schema.sql', function (err, results) {
-        if(err) throw err;
-        console.log(results)
-            db.query('SOURCE seeds.sql', function (err, results) {
-                if(err)throw err;
-                console.log(results)
-            })
-        })
-    }
-    
-    
-async function company() {
-    let optionChoice = await inquirer.prompt(options)
-    console.log(optionChoice)
-    let navigateChoice = option => {
-        let choice = option.options
+    inquirer.prompt(options).then((data) => {
+        let choice = data.options
         switch(choice) {
             case 'View all Departments':
-                console.log(choice)
-                db.query('SELECT * FROM department', function (err, results) {
-                    if(err) throw err;
-                    console.log(results);
-                })
-                navigateBack();
+                printDepartment();
+                //navigateBack();
                 break;
             case 'Add a Department':
                 //addDepartment()
@@ -82,7 +62,7 @@ async function company() {
                 console.log(choice)
                 break;
             case 'Add an Employee':
-                addEmployee()
+                // addEmployee()
                 console.log(choice)
                 break;
             case 'Update an Employee':
@@ -92,23 +72,31 @@ async function company() {
             default: 
                 return 'Error, option was selected incorrectly!'
         }
-    }
-    let navigationPick = await navigateChoice(optionChoice)
-    return navigationPick
-}
+    })
+
+
+
+function printDepartment() {
+    db.query('SELECT * FROM department', function (err, results) {
+        if(err) throw err;
+        console.log(results);
+    })
+}   
+
+        
     
 
 // allows the user to navigate back to the start of the program with y/n question.
 
-function navigateBack(back) {
-    let confirmChoice = back.goBack
-    inquirer.prompt(goBack)
-    if(confirmChoice){
-        company();
-    } else {
-        return;
-    }
+// function navigateBack(back) {
+//     let confirmChoice = back.goBack
+//     inquirer.prompt(goBack)
+//     if(confirmChoice){
+//         company();
+//     } else {
+//         return;
+//     }
 
-}
-company()
+// }
+//company()
 //generateDatabase()
