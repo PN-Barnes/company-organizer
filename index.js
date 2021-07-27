@@ -8,7 +8,7 @@ const express = require('express')
 const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-
+// ===================== CREATE CONNECTION ================== //
 const db = mysql.createConnection(
     {
       host: 'localhost',
@@ -20,7 +20,7 @@ const db = mysql.createConnection(
     },
     console.log(`Connected to the company_db database.`)
   );
-// INQUIRER QUESTION ARRAYS
+//================ INQUIRER QUESTION ARRAYS ================ //
 
 const options = [
     {
@@ -49,16 +49,18 @@ const navigation = () => {
                 console.log(choice)
                 break;
             case 'View all Roles':
-                //viewRoles()
                 console.log(choice)
+                viewRoles()
+                navigation()
                 break;
             case 'Add a role':
                 //addNewRole()
                 console.log(choice)
                 break;
             case 'View all Employees':
-                viewEmployees()
                 console.log(choice)
+                viewEmployees()
+                navigation()
                 break;
             case 'Add an Employee':
                 // addEmployee()
