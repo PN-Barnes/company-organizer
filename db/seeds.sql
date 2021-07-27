@@ -6,10 +6,10 @@ VALUES  ("Accounting"),
 
 
 INSERT INTO roles (title, salary, department_id)
-VALUES  ("Receptionist",35000.00, 3 ),
-        ("Developer", 65000.00, 4),
-        ("Accountant", 55000.00, 1),
-        ("Sales Representative", 40000.00, 2);
+VALUES  ("Receptionist",35000, 3 ),
+        ("Developer", 65000, 4),
+        ("Accountant", 55000, 1),
+        ("Sales Representative", 40000, 2);
 
 INSERT INTO employee (first_name, last_name, role_id)
 VALUES  ("Paul", "Barnes", 2),

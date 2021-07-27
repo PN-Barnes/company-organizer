@@ -31,16 +31,10 @@ const options = [
     }
 ]
 
-const goBack = [
-    {
-        type: 'confirm',
-        message: 'what would you like to do next?',
-        name: 'goBack'
-    }
-]
 // =========================== END =====================//
 
 
+const navigation = () => {
 
     inquirer.prompt(options).then((data) => {
         let choice = data.options
@@ -48,7 +42,7 @@ const goBack = [
             case 'View all Departments':
                 console.log(choice)
                 printDepartment();
-                //navigateBack();
+                navigation()
                 break;
             case 'Add a Department':
                 //addDepartment()
@@ -78,6 +72,7 @@ const goBack = [
                 return 'Error, option was selected incorrectly!'
         }
     })
+}
 
 // ================= VIEW FUNCTIONS ==========================//
 
@@ -107,16 +102,15 @@ function viewRoles() {
 
 // allows the user to navigate back to the start of the program with y/n question.
 
-// function navigateBack(back) {
-//     let confirmChoice = back.goBack
-//     inquirer.prompt(goBack)
-//     if(confirmChoice){
-//         company();
-//     } else {
-//         return;
-//     }
-
-// }
+function navigateBack() {
+    inquirer.prompt(goBack)
+    let confirmChoice = goBack.goBack
+    if(confirmChoice){
+        company();
+    } else {
+        return;
+    }
+}
 //company()
 //generateDatabase()
 // Default response for any other request (Not Found)
@@ -127,3 +121,4 @@ function viewRoles() {
 //   app.listen(PORT, () => {
 //     console.log(`Server running on port ${PORT}`);
 //   });
+navigation()
