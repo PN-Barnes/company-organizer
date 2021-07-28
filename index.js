@@ -9,6 +9,7 @@ const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 // ===================== CREATE CONNECTION ================== //
+let roleArr = []
 const db = mysql.createConnection(
     {
       host: 'localhost',
@@ -20,6 +21,12 @@ const db = mysql.createConnection(
     },
     console.log(`Connected to the company_db database.`)
   );
+
+  db.query("SELECT title FROM roles", function(err, results) {
+      if(err) throw err;
+      roleArr.push(results.title)
+      console.log(roleArr)
+  })
 //================ INQUIRER QUESTION ARRAYS ================ //
 
 const options = [
@@ -29,6 +36,26 @@ const options = [
         choices: ['View all Departments', 'View all Roles', 'View all Employees', 'Add a Department', 'Add a Role', 'Add an Employee', 'Update an Employee Role'],
         name: 'options'
     }
+]
+
+const employeeInfo = [
+    {
+        type: "Input",
+        message: "What is the Employee's First name?",
+        name: "firstName"
+    },
+    {
+        type: "Input",
+        message: "What is the Employee's Last name?",
+        name: "lastName"
+    }, 
+    // {
+    //     type: "list",
+    //     message: "What is the Employee's Role?",
+    //     choices:
+    //     name: "employeeRole"
+    // }
+
 ]
 
 // =========================== END =====================//
@@ -60,11 +87,11 @@ const navigation = () => {
             case 'View all Employees':
                 console.log(choice)
                 viewEmployees()
-                
+
                 break;
             case 'Add an Employee':
-                // addEmployee()
-                console.log(choice)
+                runAddEmployee()
+                //console.log(choice)
                 break;
             case 'Update an Employee':
                 //updateEmployee()
@@ -108,25 +135,39 @@ function viewRoles() {
 // =================================================================//        
     
 // ========================== ADD FUNCTIONS ======================= //
-// allows the user to navigate back to the start of the program with y/n question.
 
-function navigateBack() {
-    inquirer.prompt(goBack)
-    let confirmChoice = goBack.goBack
-    if(confirmChoice){
-        company();
-    } else {
-        return;
-    }
+function addDepartment () {
+
 }
-//company()
-//generateDatabase()
-// Default response for any other request (Not Found)
-// app.use((req, res) => {
-//     res.status(404).end();
-//   });
-  
-//   app.listen(PORT, () => {
-//     console.log(`Server running on port ${PORT}`);
-//   });
+
+function addRole() {
+
+}
+
+const runAddEmployee = async() => {
+    db.query("SELECT title FROM roles", function(err, results) {
+        if(err) throw err;
+        console.log(results)
+        // roleArr.push(results.title)
+    })
+    let info = await inquirer.prompt(employeeInfo)
+    addEmployee(info)
+
+}
+function addEmployee(info) {
+    let fName = info.firstName;
+    let lName = info.lastName;
+    let roleChoice = info.employeeRole
+
+    db.query('INSERT INTO employee (first_name, last_name) VALUES (?, ?)', [fName, lName, roleChoice], function(err,results) {
+        if(err) throw err;
+        console.log(results)
+        console.log("Employee Added successfully")
+        navigation()
+    })
+}
+
+// =============================================================== //
+
 navigation()
+
