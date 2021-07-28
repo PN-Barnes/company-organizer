@@ -59,6 +59,12 @@ const employeeInfo = [
         type: "input",
         message: "What is the Employee's Role?",
         name: "employeeRole"
+    },
+    {
+        type: "list",
+        message: "Who is the Employee's Manager?",
+        choices: ["Null", "Ashley Rodriguez", "Rober Bob", "Jake Johnson"],
+        name: 'manager'
     }
 
 ]
@@ -107,7 +113,7 @@ const navigation = () => {
                 break;
             case 'Add an Employee':
                 runAddEmployee()
-                //console.log(choice)
+                
                 break;
             case 'Update an Employee':
                 //updateEmployee()
@@ -131,7 +137,7 @@ function printDepartment() {
 }   
 
 function viewEmployees() {
-    db.query('SELECT * FROM employee', function (err, results) {
+    db.query('SELECT * FROM employee LEFT JOIN roles ON employee.roleRefId = roles.role_id', function (err, results) {
         if(err) throw err;
         console.log("\n")
         console.table(results);
@@ -196,13 +202,17 @@ function dbAddEmployee(info) {
     let fName = info.firstName;
     let lName = info.lastName;
     let roleChoice = info.employeeRole
-    db.query('INSERT INTO employee (first_name, last_name, roleRefId) VALUES (?, ?, ?)', [fName, lName, roleChoice], function(err,results) {
+    let manager = info.manager
+    let query = "INSERT INTO employee (first_name, last_name, roleRefId, manager) VALUES (?, ?, ?, ?)"
+    db.query(query, [fName, lName, roleChoice, manager], function(err,results) {
         if(err) throw err;
         console.log("Employee Added successfully")
         navigation()
     })
 }
+// =============================================================== //
 
+// ==================== UPDATE ROLE ============================== //
 
 // =============================================================== //
 
