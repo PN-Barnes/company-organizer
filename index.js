@@ -40,9 +40,9 @@ const navigation = () => {
         let choice = data.options
         switch(choice) {
             case 'View all Departments':
-                console.log(choice)
+                //console.log(choice)
                 printDepartment();
-                navigation()
+
                 break;
             case 'Add a Department':
                 //addDepartment()
@@ -51,7 +51,7 @@ const navigation = () => {
             case 'View all Roles':
                 console.log(choice)
                 viewRoles()
-                navigation()
+
                 break;
             case 'Add a role':
                 //addNewRole()
@@ -60,7 +60,7 @@ const navigation = () => {
             case 'View all Employees':
                 console.log(choice)
                 viewEmployees()
-                navigation()
+                
                 break;
             case 'Add an Employee':
                 // addEmployee()
@@ -81,27 +81,33 @@ const navigation = () => {
 function printDepartment() {
     db.query('SELECT * FROM department', function (err, results) {
         if(err) throw err;
-        console.log(results);
+        console.log("\n")
+        console.table(results);
+        navigation()
     })
 }   
 
 function viewEmployees() {
     db.query('SELECT * FROM employee', function (err, results) {
         if(err) throw err;
-        console.log(results);
+        console.log("\n")
+        console.table(results);
+        navigation()
     })
 }
 
 function viewRoles() {
     db.query('SELECT * FROM roles', function (err, results) {
         if(err) throw err;
-        console.log(results);
+        console.log("\n")
+        console.table(results);
+        navigation()
     })
 }
 
 // =================================================================//        
     
-
+// ========================== ADD FUNCTIONS ======================= //
 // allows the user to navigate back to the start of the program with y/n question.
 
 function navigateBack() {
