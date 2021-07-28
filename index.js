@@ -159,7 +159,7 @@ function addEmployee(info) {
     let lName = info.lastName;
     let roleChoice = info.employeeRole
 
-    db.query('INSERT INTO employee (first_name, last_name) VALUES (?, ?)', [fName, lName, roleChoice], function(err,results) {
+    db.query('INSERT INTO employee (first_name, last_name) VALUES (?, ?, ?)', [fName, lName, roleChoice], function(err,results) {
         if(err) throw err;
         console.log(results)
         console.log("Employee Added successfully")
