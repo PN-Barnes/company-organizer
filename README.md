@@ -6,7 +6,7 @@ This application is a backend company organizer, this application is able to org
 
 Here is a walkthrough video showing off this applications functionality:
 
-[Walkthrough Video]()
+[Walkthrough Video](https://youtu.be/7LODeyATDeo)
 
 
 ## Description 
