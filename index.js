@@ -30,6 +30,23 @@ const addDepartmentInfo = [
     }
 ]
 
+const roleInfoQs = [
+    {
+        type: 'input',
+        message: 'What is the Role name?',
+        name: 'roleName'
+    },
+    {
+        type: 'input',
+        message: 'What is the salary with cents included?',
+        name: 'salary'
+    },
+    {
+        type: 'input',
+        message: 'What is the department Id?',
+        name: 'departmentId'
+    }
+]
 
 const employeeInfo = [
     {
@@ -76,16 +93,16 @@ const navigation = () => {
                 break;
             case 'Add a Department':
                 runAddDepartment()
-                
+
                 break;
             case 'View all Roles':
-                console.log(choice)
                 viewRoles()
 
                 break;
-            case 'Add a role':
-                //addNewRole()
+            case 'Add a Role':
                 console.log(choice)
+                runAddRole()
+                
                 break;
             case 'View all Employees':
                 console.log(choice)
@@ -155,8 +172,22 @@ function addDepartment (info) {
 }
 
 // ================================================================== //
-function addRole() {
+const runAddRole = async() => {
+    let roleInfo = await inquirer.prompt(roleInfoQs)
+    addRole(roleInfo)
+}
 
+function addRole (info) {
+    let roleName = info.roleName
+    let salary = info.salary;
+    let department = info.departmentId
+    let query = "INSERT INTO roles (title, salary, deptId) VALUES (?, ?, ?)"
+
+    db.query(query, [roleName, salary, department], function(err, results) {
+        if(err)throw err;
+        console.log(`Role: ${roleName} Added Successfully!`)
+        navigation()
+    })
 }
 
 // ================================================================= //
