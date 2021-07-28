@@ -9,7 +9,6 @@ const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 // ===================== CREATE CONNECTION ================== //
-let roleArr = []
 const db = mysql.createConnection(
     {
       host: 'localhost',
@@ -21,22 +20,16 @@ const db = mysql.createConnection(
     },
     console.log(`Connected to the company_db database.`)
   );
-
-  db.query("SELECT title FROM roles", function(err, results) {
-      if(err) throw err;
-      roleArr.push(results.title)
-      console.log(roleArr)
-  })
 //================ INQUIRER QUESTION ARRAYS ================ //
 
-const options = [
+const addDepartmentInfo = [
     {
-        type: 'list',
-        message: 'Choose what you would like to do!',
-        choices: ['View all Departments', 'View all Roles', 'View all Employees', 'Add a Department', 'Add a Role', 'Add an Employee', 'Update an Employee Role'],
-        name: 'options'
+        type: "input",
+        message: "What is the name of the Department?",
+        name: "deptName"
     }
 ]
+
 
 const employeeInfo = [
     {
@@ -49,14 +42,24 @@ const employeeInfo = [
         message: "What is the Employee's Last name?",
         name: "lastName"
     }, 
-    // {
-    //     type: "list",
-    //     message: "What is the Employee's Role?",
-    //     choices:
-    //     name: "employeeRole"
-    // }
+    {
+        type: "input",
+        message: "What is the Employee's Role?",
+        name: "employeeRole"
+    }
 
 ]
+
+
+const options = [
+    {
+        type: 'list',
+        message: 'Choose what you would like to do!',
+        choices: ['View all Departments', 'View all Roles', 'View all Employees', 'Add a Department', 'Add a Role', 'Add an Employee', 'Update an Employee Role'],
+        name: 'options'
+    }
+]
+
 
 // =========================== END =====================//
 
@@ -72,8 +75,8 @@ const navigation = () => {
 
                 break;
             case 'Add a Department':
-                //addDepartment()
-                console.log(choice)
+                runAddDepartment()
+                
                 break;
             case 'View all Roles':
                 console.log(choice)
@@ -131,41 +134,48 @@ function viewRoles() {
         navigation()
     })
 }
-
 // =================================================================//        
-    
+ 
+
 // ========================== ADD FUNCTIONS ======================= //
 
-function addDepartment () {
-
+const runAddDepartment = async() => {
+    let deptInfo = await inquirer.prompt(addDepartmentInfo)
+    addDepartment(deptInfo)
 }
 
+function addDepartment (info) {
+    let departmentName = info.deptName
+    let query = "INSERT INTO department (department_name) VALUES(?)"
+    db.query(query, [departmentName], function(err, results) {
+        if(err)throw err;
+        console.log(`Department: ${departmentName} Added Successfully!`)
+        navigation()
+    })
+}
+
+// ================================================================== //
 function addRole() {
 
 }
 
-const runAddEmployee = async() => {
-    db.query("SELECT title FROM roles", function(err, results) {
-        if(err) throw err;
-        console.log(results)
-        // roleArr.push(results.title)
-    })
-    let info = await inquirer.prompt(employeeInfo)
-    addEmployee(info)
+// ================================================================= //
 
+const runAddEmployee = async() => {
+    let info = await inquirer.prompt(employeeInfo)
+    dbAddEmployee(info)
 }
-function addEmployee(info) {
+function dbAddEmployee(info) {
     let fName = info.firstName;
     let lName = info.lastName;
     let roleChoice = info.employeeRole
-
-    db.query('INSERT INTO employee (first_name, last_name) VALUES (?, ?, ?)', [fName, lName, roleChoice], function(err,results) {
+    db.query('INSERT INTO employee (first_name, last_name, roleRefId) VALUES (?, ?, ?)', [fName, lName, roleChoice], function(err,results) {
         if(err) throw err;
-        console.log(results)
         console.log("Employee Added successfully")
         navigation()
     })
 }
+
 
 // =============================================================== //
 
