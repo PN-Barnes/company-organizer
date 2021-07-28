@@ -1,8 +1,4 @@
 const inquirer = require('inquirer')
-const Department = require('./lib/Department')
-const createDepartment = require('./lib/Department');
-// const Employee = require('./Employee')
-// const Role = require('./Role')
 const mysql = require('mysql2');
 const express = require('express')
 const app = express();
@@ -144,7 +140,7 @@ function viewEmployees() {
 }
 
 function viewRoles() {
-    db.query('SELECT * FROM roles', function (err, results) {
+    db.query('SELECT * FROM roles LEFT JOIN department ON roles.deptId = department.id ', function (err, results) {
         if(err) throw err;
         console.log("\n")
         console.table(results);
