@@ -79,6 +79,19 @@ const options = [
     }
 ]
 
+const updateEmployee = [
+    {
+        type: 'input',
+        message: "What is the Employee's ID",
+        name: 'employeeId'
+    },
+    {
+        type: "input",
+        message: "What is their New role id?",
+        name: "newRole"
+
+    }
+]
 
 // =========================== END =====================//
 
@@ -115,9 +128,9 @@ const navigation = () => {
                 runAddEmployee()
                 
                 break;
-            case 'Update an Employee':
-                //updateEmployee()
-                console.log(choice)
+            case 'Update an Employee Role':
+                runUpdate()
+                
                 break;
             default: 
                 return 'Error, option was selected incorrectly!'
@@ -213,6 +226,24 @@ function dbAddEmployee(info) {
 // =============================================================== //
 
 // ==================== UPDATE ROLE ============================== //
+
+
+const runUpdate = async() => {
+    let whichEmployee = await inquirer.prompt(updateEmployee)
+    employeeUpdate(whichEmployee)
+}
+
+function employeeUpdate(info) {
+    let query = "UPDATE employee SET roleRefId = ? WHERE employee_id = ?"
+    let employeeId = info.employeeId
+    let newRole = info.newRole
+
+    db.query(query, [newRole, employeeId], function(err, results) {
+        if(err) throw err;
+        console.log(`Employee with ID: ${employeeId} Successfully updated!`)
+        navigation()
+    })
+}
 
 // =============================================================== //
 
